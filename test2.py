@@ -5,6 +5,9 @@ import time, string, random
 
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from multiprocessing.pool import ThreadPool
+
 
 browsers = []
 
@@ -15,8 +18,20 @@ class Browser:
 
 
 def manipulate_browser(browser):
+    global lock
+    with lock:
+        caps = DesiredCapabilities().CHROME
+        caps["pageLoadStrategy"] = "none"
 
-    browser.driver = webdriver.Chrome(ChromeDriverManager().install())
+        chrome_options = webdriver.ChromeOptions();
+
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        os.mkdir(current_dir + '\\' + browser.session_file) 
+        chrome_options.add_argument(r'--user-data-dir=' + current_dir + '\\' + browser.session_file + '\\selenium')
+
+        chrome_options.add_argument("--window-size=750,750")
+
+    browser.driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options, desired_capabilities=caps)
 
     while True:
         browser.driver.get(browser.url)
@@ -32,7 +47,7 @@ def start_browsers():
 
 
 if __name__=='__main__':
-    # lock = threading.Lock()
+    lock = threading.Lock()
     threads = []
     urls = 'https://google.com', 'https://facebook.com', 'https://instagram.com', 'https://snapchat.com', 'https://stackoverflow.com', 'https://amazon.com', 'https://microsoft.com'#, 'https://stackoverflow.com', 'https://youtube.com', 'https://yahoo.com'
     for url in urls:
