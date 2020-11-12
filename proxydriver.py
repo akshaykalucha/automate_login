@@ -4,9 +4,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 import zipfile,os
 from selenium import webdriver
 
-src = 'https://stackoverflow.com/questions/55582136/how-to-set-proxy-with-authentication-in-selenium-chromedriver-python'
-
-
 
 
 # PROXY_HOST = '199.247.13.177'  # rotating proxy or host
