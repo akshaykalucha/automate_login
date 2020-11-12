@@ -30,7 +30,7 @@ def sub():
 
 
 def brigade_post(driver, username, password):
-        driver.get("https://www.reddit.com/login")
+        driver.get("https://www.reddit.com/login/")
         login_link = driver.find_element_by_xpath('//*[@id="loginUsername"]')
 
         login_link.click()
