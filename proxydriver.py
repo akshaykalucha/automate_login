@@ -4,9 +4,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 import zipfile,os
 from selenium import webdriver
 
-
-
-
 def get_chromedriver(PROXY_HOST, PROXY_PORT, PROXY_USER, PROXY_PASS, use_proxy=False, user_agent=None):
     manifest_json = """
     {
