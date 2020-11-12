@@ -6,11 +6,6 @@ from selenium import webdriver
 
 
 
-# PROXY_HOST = '199.247.13.177'  # rotating proxy or host
-# PROXY_PORT = 31280 # port
-# PROXY_USER = 'nightcruiser' # username
-# PROXY_PASS = 'akshay123@' # password
-
 
 def get_chromedriver(PROXY_HOST, PROXY_PORT, PROXY_USER, PROXY_PASS, use_proxy=False, user_agent=None):
     manifest_json = """
