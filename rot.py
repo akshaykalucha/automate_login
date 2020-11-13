@@ -2,16 +2,22 @@ import requests
 from lxml.html import fromstring
 from itertools import cycle
 import traceback
+from bs4 import BeautifulSoup as bs
+
 def get_proxies():
-    url = 'https://free-proxy-list.net/'
-    response = requests.get(url)
-    parser = fromstring(response.text)
-    proxies = set()
-    for i in parser.xpath('//tbody/tr')[:10]:
-        if i.xpath('.//td[7][contains(text(),"yes")]'):
-            #Grabbing IP and corresponding PORT
-            proxy = ":".join([i.xpath('.//td[1]/text()')[0], i.xpath('.//td[2]/text()')[0]])
-            proxies.add(proxy)
+    url = "https://free-proxy-list.net/"
+    # get the HTTP response and construct soup object
+    soup = bs(requests.get(url).content, "html.parser")
+    proxies = []
+    for row in soup.find("table", attrs={"id": "proxylisttable"}).find_all("tr")[1:]:
+        tds = row.find_all("td")
+        try:
+            ip = tds[0].text.strip()
+            port = tds[1].text.strip()
+            host = f"{ip}:{port}"
+            proxies.append(host)
+        except IndexError:
+            continue
     return proxies
 proxies = get_proxies()
 print(proxies)
