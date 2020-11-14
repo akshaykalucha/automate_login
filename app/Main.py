@@ -6,7 +6,6 @@ import requests
 from random import choice
 from webdriver_manager.chrome import ChromeDriverManager
 import praw
-import pprint
 import random
 import requests
 from http_request_randomizer.requests.proxy.requestProxy import RequestProxy
