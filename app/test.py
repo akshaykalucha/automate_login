@@ -92,17 +92,51 @@ class AnagramTest(unittest.TestCase):
         expected = []
         self.assertCountEqual(find_anagrams("go", candidates), expected)
 
-    def test_anagrams_must_use_all_letters_exactly_once(self):
-        candidates = ["patter"]
-        expected = []
-        self.assertCountEqual(find_anagrams("tapper", candidates), expected)
+def check_ip(version, debug, proxy, tor_proxy, proxy_type, outfile):
+    """
+    :param version: ipv4 or ipv6
+    :param debug: don't use headless mode (for debugging)
+    :param proxy: use this proxy server
+    :param tor_proxy: configure browser for tor proxy
+    :param outfile: log to this file
+    :return: --
+    """
+    opts = Options()
+    if not debug:
+        opts.set_headless()
+        assert opts.headless  # Operating in headless mode
 
-    def test_words_are_not_anagrams_of_themselves_case_insensitive(self):
-        candidates = ["BANANA", "Banana", "banana"]
-        expected = []
-        self.assertCountEqual(find_anagrams("BANANA", candidates), expected)
-
-    def test_words_other_than_themselves_can_be_anagrams(self):
-        candidates = ["Listen", "Silent", "LISTEN"]
-        expected = ["Silent"]
-        self.assertCountEqual(find_anagrams("LISTEN", candidates), expected)
+    profile = webdriver.FirefoxProfile()
+    if not proxy:
+        proxy = None
+    # set FF preference to socks proxy
+    if proxy or tor_proxy:
+        _print('Setting proxy...')
+        if proxy is not None:
+            proxy = proxy.split(':')
+            proxy_host = str(proxy[0])
+            proxy_port = int(proxy[1])
+            _print('Proxy: %s:%d' % (proxy_host, proxy_port))
+            profile.set_preference("network.proxy.type", 1)
+            if tor_proxy or proxy_type == 'tor':
+                profile.set_preference("network.proxy.socks", proxy_host)
+                profile.set_preference("network.proxy.socks_port", proxy_port)
+                profile.set_preference("network.proxy.socks_version", 5)
+                profile.set_preference('network.proxy_dns', 'true')  # Proxy DNS
+            elif proxy_type == 'socks5':
+                profile.set_preference("network.proxy.socks", proxy_host)
+                profile.set_preference("network.proxy.socks_port", proxy_port)
+                profile.set_preference("network.proxy.socks_version", 5)
+                profile.set_preference('network.proxy_dns', 'true')  # Proxy DNS
+            elif proxy_type == 'socks4':
+                profile.set_preference("network.proxy.socks", proxy_host)
+                profile.set_preference("network.proxy.socks_port", proxy_port)
+                profile.set_preference("network.proxy.socks_version", 4)
+            elif proxy_type == 'http':
+                profile.set_preference("network.proxy.http", proxy_host)
+                profile.set_preference("network.proxy.http_port", proxy_port)
+                profile.set_preference('network.proxy.https', proxy_host)
+                profile.set_preference('network.proxy.https', proxy_port)
+                profile.set_preference('network.proxy.ssl', proxy_host)
+                profile.set_preference('network.proxy.ssl_port', proxy_port)
+                profile.set_preference('network.proxy_dns', 'true')  # Proxy DNS
