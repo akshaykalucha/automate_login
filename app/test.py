@@ -36,6 +36,19 @@ def run_threaded():
 run_threaded()
 
 
+
+
+
+def printlog(data, outfile):
+    """
+    :param data: log and print this to stdout
+    :param outfile: to fhis file
+    :return: -
+    """
+    pp_json(data)
+    with open(outfile, 'a') as log:
+        log.write(str(data) + "\n")
+
 class AnagramTest(unittest.TestCase):
     def test_no_matches(self):
         candidates = ["hello", "world", "zombies", "pants"]
