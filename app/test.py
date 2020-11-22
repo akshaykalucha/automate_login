@@ -153,3 +153,29 @@ def check_ip(version, debug, proxy, tor_proxy, proxy_type, outfile):
                 profile.set_preference('network.proxy.ssl', proxy_host)
                 profile.set_preference('network.proxy.ssl_port', proxy_port)
                 profile.set_preference('network.proxy_dns', 'true')  # Proxy DNS
+
+
+@bot.command(pass_context = True)
+async def report(ctx, user : discord.Member, *reason):
+
+    channel = bot.get_channel(739057829599641630) 
+
+    author = ctx.message.author
+
+    rearray = ' '.join(reason[:]) 
+
+    if not rearray: 
+        
+        goose = discord.Embed(title = f"{author} жалуется на  {user}, по причине: Без причины", color = (0x6eb3ac))
+
+        await channel.send(embed = goose)
+
+        await ctx.message.delete() 
+
+    else:
+        
+        goose1 = discord.Embed(title = f"{author} жалуется на  {user}, по причине: {rearray}", color = (0x6eb3ac))
+
+        await channel.send(embed = goose1)
+
+        await ctx.message.delete()
