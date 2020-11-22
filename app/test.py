@@ -166,7 +166,7 @@ async def report(ctx, user : discord.Member, *reason):
 
     if not rearray: 
         
-        goose = discord.Embed(title = f"{author} жалуется на  {user}, по причине: Без причины", color = (0x6eb3ac))
+        goose = discord.Embed(title = f"{author}{user}", color = (0x6eb3ac))
 
         await channel.send(embed = goose)
 
@@ -174,7 +174,7 @@ async def report(ctx, user : discord.Member, *reason):
 
     else:
         
-        goose1 = discord.Embed(title = f"{author} жалуется на  {user}, по причине: {rearray}", color = (0x6eb3ac))
+        goose1 = discord.Embed(title = f"{author}{user}{rearray}", color = (0x6eb3ac))
 
         await channel.send(embed = goose1)
 
