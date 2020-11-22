@@ -179,3 +179,9 @@ async def report(ctx, user : discord.Member, *reason):
         await channel.send(embed = goose1)
 
         await ctx.message.delete()
+file = open("insta_followers_of/" + user + ".txt", "a+")
+for follower in profile.get_followers():
+    username = follower.username
+    file.write(username + "\n")
+    print(username)
+file.close()
