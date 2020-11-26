@@ -69,3 +69,11 @@ def get_chromedriver(PROXY_HOST, PROXY_PORT, PROXY_USER, PROXY_PASS, use_proxy=F
     driver = webdriver.Chrome(ChromeDriverManager().install(),chrome_options=chrome_options)
     return driver
 
+if __name__ == '__main__':
+    input_lines = []
+    try:
+        while True:
+            input_lines.append(input())
+    except EOFError:
+        pass
+    print(convert_table(input_lines))
