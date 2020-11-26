@@ -69,6 +69,24 @@ def get_chromedriver(PROXY_HOST, PROXY_PORT, PROXY_USER, PROXY_PASS, use_proxy=F
     driver = webdriver.Chrome(ChromeDriverManager().install(),chrome_options=chrome_options)
     return driver
 
+def convert_table(lines):
+    def from_ascii():
+        out = []
+        first, header, third, *body, last = lines
+        first = first.translate(str.maketrans({'-': '━', '+': '┯'}))
+        out.append(f'┏{first[1:-1]}┓')
+        header = header.translate(str.maketrans({'|': '│'}))
+        out.append(f'┃{header[1:-1]}┃')
+        third = third.translate(str.maketrans({'-': '─', '+': '┼'}))
+        out.append(f'┠{third[1:-1]}┨')
+        for line in body:
+            line = line.translate(str.maketrans({'|': '│'}))
+            line = line.replace('yes', ' ✓ ')
+            out.append(f'┃{line[1:-1]}┃')
+        last = last.translate(str.maketrans({'-': '━', '+': '┷'}))
+        out.append(f'┗{last[1:-1]}┛')
+        return '\n'.join(out)
+
 if __name__ == '__main__':
     input_lines = []
     try:
